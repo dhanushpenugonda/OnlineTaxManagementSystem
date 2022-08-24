@@ -1,0 +1,394 @@
+-- table_1
+create table city(
+city varchar2(20) PRIMARY KEY,
+zip integer,
+state varchar2(30)
+);
+insert into city values ('hyderbad',500790,'telangana');
+insert into city values ('tenali',508769,'andrapradesh');
+insert into city values ('khammam',500702,'telangana');
+insert into city values ('nellore',500560,'andrapradesh');
+insert into city values ('guntur',500520,'andrapradesh');
+insert into city values ('warangal',500765,'telangana');
+
+
+
+-- table_2
+CREATE TABLE client (
+reg_id varchar2(10),
+fname varchar2(20) NOT NULL,
+lname varchar2(20) NOT NULL,
+gender varchar2(20),
+email varchar2(40),
+dob date,
+city varchar2(20),
+primary key (reg_id),
+client_uid varchar2(40) NOT NULL,
+client_pwd varchar2(20) NOT NULL,
+constraints fk_client FOREIGN KEY (city) REFERENCES city(city)
+);
+insert into client values('ABCTY1234D','Harshith','reddy','male','harshith15@gmail.com','08/May/2003','hyderbad','harshith15@gmail.com','harshith15');
+insert into client values('ABCTY1567E','Dhanush','Penugonda','male','dhanush16@gmail.com','04/Mar/2003','tenali','dhanush16@gmail.com','dhanush16');
+insert into client values('ABCTY1191S','Venkat','Sai','male','venkatsai21@gmail.com','09/Sep/2002','khammam','venkatsai21@gmail.com','venkatsai21');
+insert into client values('ABCTY8986D','Vivek','Sai','male','vivek32@gmail.com','24/Oct/2002','nellore','vivek32@gmail.com','vivek32');
+insert into client values('ABCTY1987E','Vishnu','Kumar','male','vishnu716@gmail.com','07/Jul/2002','guntur','vishnu716@gmail.com','vishnu716');
+insert into client values('ABCTY1983D','sampath','reddy','male','sampath615@gmail.com','07/Jun/1996','hyderbad','sampath615@gmail.com','sampath615');
+insert into client values('ABCTY1507E','suresh','nani','male','suresh98@gmail.com','02/Jan/1993','warangal','suresh98@gmail.com','suresh98');
+
+
+-- table_3
+create table phone (
+reg_id varchar2(10),
+phone_no varchar2(10),
+primary key(reg_id,phone_no),
+constraints fk_phone_reg foreign key(reg_id) references client(reg_id)
+);
+insert into phone values('ABCTY1234D',9988776655);
+insert into phone values('ABCTY1567E',8899778877);
+insert into phone values('ABCTY1191S',9966775588);
+insert into phone values('ABCTY8986D',8877332244);
+insert into phone values('ABCTY1987E',9977112266);
+
+
+-- table_4
+create table admin(
+admin_id varchar2(10),
+admin_uid varchar2(40),
+admin_pwd varchar2(20),
+primary key (admin_id)
+);
+insert into admin values('130822','admin420@gmail.com','@admin42');
+
+
+
+
+-- table_5
+create table schedule(
+schedule_id varchar2(10),
+reg_id varchar2(10),
+schedule_date date,
+assign varchar2(10),
+schedule_status varchar2(10),
+primary key(schedule_id),
+constraints fk_schedulereg foreign key (reg_id) references client(reg_id),
+constraints fk_scheduleassign foreign key (assign) references admin(admin_id)
+);
+insert into schedule values(2107130822, 'ABCTY1234D','20/Dec/2021','130822','yes');
+insert into schedule values(2109131212, 'ABCTY1191S','24/Nov/2021','130822','yes');
+insert into schedule values(2112170821, 'ABCTY8986D','27/Dec/2022','130822','no');
+insert into schedule values(2112191220, 'ABCTY1567E','29/Oct/2021','130822','no');
+
+
+-- table_6
+create table payment (
+pay_id varchar2(10),
+reg_id varchar2(10),
+pay_date date,
+pay_status varchar2(10),
+exp_date date,
+total_income integer,
+loan_deductions integer,
+primary key (pay_id),
+constraints fk_paymentreg foreign key (reg_id) references client(reg_id)
+);
+insert into payment values(870456,'ABCTY1234D','29/Oct/2021','done','23/Nov/2022',30000,1000);
+insert into payment values(970456,'ABCTY1191S','24/Dec/2021','pay','23/Jan/2023',40000,1200);
+insert into payment values(570456,'ABCTY8986D','30/Nov/2021','done','03/Jan2022',60000,1500);
+insert into payment values(370456,'ABCTY1987E','02/Dec2021','done','23/Jan/2023',300000,10500);
+insert into payment values(170456,'ABCTY1567E','22/Dec/2021','done','14/Apr/2022',90000,3000);
+
+
+-- table_7
+create table acc_details(
+acc_no varchar2(16),
+acc_pwd varchar2(20),
+bname varchar2(20),
+primary key (acc_no)
+);
+insert into acc_details values('123456789012','asedef123','icici');
+insert into acc_details values('234567890123','adfgaeeq','hdfc');
+insert into acc_details values('531583400623','awefawefae','sbi');
+insert into acc_details values('298345893451','asedef123','hdfc');
+insert into acc_details values('213412345235','asedef123','hdfc');
+insert into acc_details values('123412341234','asedef123','icici');
+insert into acc_details values('523456341234','asedef123','sbi');
+insert into acc_details values('345234523423','asedef123','idfc');
+insert into acc_details values('234523413532','asedef123','hdfc');
+insert into acc_details values('786745623413','asedef123','kotak');
+insert into acc_details values('923421573434','asedef123','axis');
+
+
+
+-- table_8
+create table acc_no(
+reg_id varchar2(10),
+acc_no varchar2(16),
+primary key(reg_id,acc_no),
+constraints fk_accreg foreign key(reg_id) references client(reg_id),
+constraints fk_acc_no foreign key (acc_no) references acc_details(acc_no)
+);
+insert into acc_no values('ABCTY1234D','123456789012');
+insert into acc_no values('ABCTY1234D','234567890123');
+insert into acc_no values('ABCTY1567E','531583400623');
+insert into acc_no values('ABCTY1567E','298345893451');
+insert into acc_no values('ABCTY1191S','213412345235');
+insert into acc_no values('ABCTY1191S','123412341234');
+insert into acc_no values('ABCTY1191S','523456341234');
+insert into acc_no values('ABCTY8986D','345234523423');
+insert into acc_no values('ABCTY1987E','234523413532');
+insert into acc_no values('ABCTY1987E','786745623413');
+insert into acc_no values('ABCTY1987E','923421573434');
+
+
+-- table_9
+create table card_details(
+card_name varchar2(20),
+card_no varchar2(16),
+card_exp date,
+cvv integer,
+primary key (card_no)
+);
+insert into card_details values('harshith','3153513534113435', '12/Jul/2027',123);
+insert into card_details values('dhanush', '2345672342374034', '01/Dec/2029',213);
+insert into card_details values('venkatg', '7845734720248205', '15/Nov/2030',234);
+insert into card_details values('venkatg', '4753845762384934', '01/Feb/2027',246);
+insert into card_details values('viveksk', '5647264245974053', '22/Aug/2032',563);
+insert into card_details values('vishnub', '6556264582743724', '18/Jul/2024',345);
+insert into card_details values('vishnub', '7965973645872693', '22/Jun/2026',645);
+
+
+-- table_10
+create table card_no(
+reg_id varchar2(10),
+card_no varchar2(16),
+primary key (reg_id,card_no),
+constraints fk_cardreg foreign key(reg_id) references client(reg_id),
+constraints fk_card_no foreign key (card_no) references card_details(card_no)
+);
+insert into card_no values('ABCTY1234D','3153513534113435');
+insert into card_no values('ABCTY1567E','2345672342374034');
+insert into card_no values('ABCTY1191S','7845734720248205');
+insert into card_no values('ABCTY1191S','4753845762384934');
+insert into card_no values('ABCTY8986D','5647264245974053');
+insert into card_no values('ABCTY1987E','6556264582743724');
+insert into card_no values('ABCTY1987E','7965973645872693');
+
+
+
+
+
+
+
+-- card_details{ card_name, card_no, card_exp, cvv }
+select * from city;
+select * from client;
+select * from phone;
+select * from admin;
+select * from schedule;
+select * from payment;
+select * from acc_no;
+select * from acc_details;
+select * from card_no;
+select * from card_details;
+
+
+drop table city cascade constraint;
+drop table client cascade constraint;
+drop table phone cascade constraint;
+drop table admin cascade constraint;
+drop table schedule cascade constraint;
+drop table payment cascade constraint;
+drop table acc_no cascade constraint;
+drop table acc_details cascade constraint;
+drop table card_no cascade constraint;
+drop table card_details cascade constraint;
+
+
+------------------------------------------------------------------------------------------------------
+-- table_1
+create table city(
+city varchar(20) PRIMARY KEY,
+zip integer,
+state varchar(30)
+);
+insert into city values ('hyderbad',500790,'telangana');
+insert into city values ('tenali',508769,'andrapradesh');
+insert into city values ('khammam',500702,'telangana');
+insert into city values ('nellore',500560,'andrapradesh');
+insert into city values ('guntur',500520,'andrapradesh');
+insert into city values ('warangal',500765,'telangana');
+
+
+
+-- table_2
+CREATE TABLE client (
+reg_id varchar(10),
+fname varchar(20) NOT NULL,
+lname varchar(20) NOT NULL,
+gender varchar(20),
+email varchar(40),
+dob date,
+city varchar(20),
+primary key (reg_id),
+client_uid varchar(40) NOT NULL,
+client_pwd varchar(20) NOT NULL,
+FOREIGN KEY (city) REFERENCES city(city)
+);
+insert into client values('ABCTY1234D','Harshith','reddy','male','harshith15@gmail.com','08/May/2003','hyderbad','harshith15@gmail.com','harshith15');
+insert into client values('ABCTY1567E','Dhanush','Penugonda','male','dhanush16@gmail.com','04/Mar/2003','tenali','dhanush16@gmail.com','dhanush16');
+insert into client values('ABCTY1191S','Venkat','Sai','male','venkatsai21@gmail.com','09/Sep/2002','khammam','venkatsai21@gmail.com','venkatsai21');
+insert into client values('ABCTY8986D','Vivek','Sai','male','vivek32@gmail.com','24/Oct/2002','nellore','vivek32@gmail.com','vivek32');
+insert into client values('ABCTY1987E','Vishnu','Kumar','male','vishnu716@gmail.com','07/Jul/2002','guntur','vishnu716@gmail.com','vishnu716');
+insert into client values('ABCTY1983D','sampath','reddy','male','sampath615@gmail.com','07/Jun/1996','hyderbad','sampath615@gmail.com','sampath615');
+insert into client values('ABCTY1507E','suresh','nani','male','suresh98@gmail.com','02/Jan/1993','warangal','suresh98@gmail.com','suresh98');
+
+
+-- table_3
+create table phone (
+reg_id varchar(10),
+phone_no varchar(10),
+primary key(reg_id,phone_no),
+foreign key(reg_id) references client(reg_id)
+);
+insert into phone values('ABCTY1234D',9988776655);
+insert into phone values('ABCTY1567E',8899778877);
+insert into phone values('ABCTY1191S',9966775588);
+insert into phone values('ABCTY8986D',8877332244);
+insert into phone values('ABCTY1987E',9977112266);
+
+
+-- table_4
+create table admin(
+admin_id varchar(10),
+admin_uid varchar(40),
+admin_pwd varchar(20),
+primary key (admin_id)
+);
+insert into admin values('130822','admin420@gmail.com','@admin42');
+
+
+
+
+-- table_5
+create table schedule(
+schedule_id varchar(10),
+reg_id varchar(10),
+schedule_date date,
+assign varchar(10),
+schedule_status varchar(10),
+primary key(schedule_id),
+foreign key (reg_id) references client(reg_id),
+foreign key (assign) references admin(admin_id)
+);
+insert into schedule values(2107130822, 'ABCTY1234D','20/Dec/2021','130822','yes');
+insert into schedule values(2109131212, 'ABCTY1191S','24/Nov/2021','130822','yes');
+insert into schedule values(2112170821, 'ABCTY8986D','27/Dec/2022','130822','no');
+insert into schedule values(2112191220, 'ABCTY1567E','29/Oct/2021','130822','no');
+
+
+-- table_6
+create table payment (
+pay_id varchar(10),
+reg_id varchar(10),
+pay_date date,
+pay_status varchar(10),
+exp_date date,
+total_income integer,
+loan_deductions integer,
+primary key (pay_id),
+foreign key (reg_id) references client(reg_id)
+);
+insert into payment values(870456,'ABCTY1234D','29/Oct/2021','done','23/Nov/2022',30000,1000);
+insert into payment values(970456,'ABCTY1191S','24/Dec/2021','pay','23/Jan/2023',40000,1200);
+insert into payment values(570456,'ABCTY8986D','30/Nov/2021','done','03/Jan2022',60000,1500);
+insert into payment values(370456,'ABCTY1987E','02/Dec2021','done','23/Jan/2023',300000,10500);
+insert into payment values(170456,'ABCTY1567E','22/Dec/2021','done','14/Apr/2022',90000,3000);
+
+
+-- table_7
+create table acc_details(
+acc_no varchar(16),
+acc_pwd varchar(20),
+bname varchar(20),
+primary key (acc_no)
+);
+insert into acc_details values('123456789012','asedef123','icici');
+insert into acc_details values('234567890123','adfgaeeq','hdfc');
+insert into acc_details values('531583400623','awefawefae','sbi');
+insert into acc_details values('298345893451','asedef123','hdfc');
+insert into acc_details values('213412345235','asedef123','hdfc');
+insert into acc_details values('123412341234','asedef123','icici');
+insert into acc_details values('523456341234','asedef123','sbi');
+insert into acc_details values('345234523423','asedef123','idfc');
+insert into acc_details values('234523413532','asedef123','hdfc');
+insert into acc_details values('786745623413','asedef123','kotak');
+insert into acc_details values('923421573434','asedef123','axis');
+
+
+
+-- table_8
+create table acc_no(
+reg_id varchar(10),
+acc_no varchar(16),
+primary key(reg_id,acc_no),
+foreign key(reg_id) references client(reg_id),
+foreign key (acc_no) references acc_details(acc_no)
+);
+insert into acc_no values('ABCTY1234D','123456789012');
+insert into acc_no values('ABCTY1234D','234567890123');
+insert into acc_no values('ABCTY1567E','531583400623');
+insert into acc_no values('ABCTY1567E','298345893451');
+insert into acc_no values('ABCTY1191S','213412345235');
+insert into acc_no values('ABCTY1191S','123412341234');
+insert into acc_no values('ABCTY1191S','523456341234');
+insert into acc_no values('ABCTY8986D','345234523423');
+insert into acc_no values('ABCTY1987E','234523413532');
+insert into acc_no values('ABCTY1987E','786745623413');
+insert into acc_no values('ABCTY1987E','923421573434');
+
+
+-- table_9
+create table card_details(
+card_name varchar(20),
+card_no varchar(16),
+card_exp date,
+cvv integer,
+primary key (card_no)
+);
+insert into card_details values('harshith','3153513534113435', '12/Jul/2027',123);
+insert into card_details values('dhanush', '2345672342374034', '01/Dec/2029',213);
+insert into card_details values('venkatg', '7845734720248205', '15/Nov/2030',234);
+insert into card_details values('venkatg', '4753845762384934', '01/Feb/2027',246);
+insert into card_details values('viveksk', '5647264245974053', '22/Aug/2032',563);
+insert into card_details values('vishnub', '6556264582743724', '18/Jul/2024',345);
+insert into card_details values('vishnub', '7965973645872693', '22/Jun/2026',645);
+
+
+-- table_10
+create table card_no(
+reg_id varchar(10),
+card_no varchar(16),
+primary key (reg_id,card_no),
+foreign key(reg_id) references client(reg_id),
+foreign key (card_no) references card_details(card_no)
+);
+insert into card_no values('ABCTY1234D','3153513534113435');
+insert into card_no values('ABCTY1567E','2345672342374034');
+insert into card_no values('ABCTY1191S','7845734720248205');
+insert into card_no values('ABCTY1191S','4753845762384934');
+insert into card_no values('ABCTY8986D','5647264245974053');
+insert into card_no values('ABCTY1987E','6556264582743724');
+insert into card_no values('ABCTY1987E','7965973645872693');
+
+
+
+select * from city;
+select * from client;
+select * from phone;
+select * from admin;
+select * from schedule;
+select * from payment;
+select * from acc_no;
+select * from acc_details;
+select * from card_no;
+select * from card_details;
